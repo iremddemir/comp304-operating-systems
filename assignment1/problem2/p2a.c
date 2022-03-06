@@ -38,12 +38,13 @@ int main(int argc, char** argv) {
     //send message ->B
     write(ord_pipe_ab[WRITE_END],&car_no,2);
     //get message from D
+    close(ord_pipe_da[WRITE_END]);
     read(ord_pipe_da[READ_END], &read_msg_d,sizeof(read_msg_d));
     if (read_msg_d == 1){
       printf("Finished washing car %d\n", read_msg_d);
     }
     else{
-      printf("there is some error encountered during wash         pipeline");
+      printf("there is some error encountered during wash pipeline");
     }
     
     exit(0);
@@ -52,7 +53,8 @@ int main(int argc, char** argv) {
   else{
     close(ord_pipe_ab[WRITE_END]);
     //get message from A
-    read(ord_pipe_ab[READ_END],&read_msg_b,sizeof(read_msg_b));
+   close(ord_pipe_ab[WRITE_END]);
+   read(ord_pipe_ab[READ_END],&read_msg_b,sizeof(read_msg_b));
     sleep(4);
     printf("Washing the windows of car %d\n",read_msg_b);
     //create pipe from B to C
