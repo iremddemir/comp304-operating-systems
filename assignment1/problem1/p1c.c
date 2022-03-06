@@ -11,13 +11,14 @@ int main(int argc, char** argv) {
 
 	// child process
 	if(pid == 0) {
-    //immediatly becomes zombie process
+    //becomes zombie process
 		exit(0);
 
 	//parent
 	} else if (pid > 0) {
 		//sleep for 6s
     sleep(6); 
+    wait(NULL);
 
   //pid < 0 -> failed fork    
 	} else {
