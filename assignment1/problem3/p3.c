@@ -41,23 +41,11 @@ int main(int argc, char** argv) {
     read(ord_pipe_ba[READ_END],&msg_start_time_b,sizeof(msg_start_time_b));
     gettimeofday(&msg_end, NULL);
     
-    printf("B started at %d:%0d:%0d\n",
-            localtime(&msg_start_time_b.tv_sec)->tm_hour,
-            localtime(&msg_start_time_b.tv_sec)->tm_min,
-            localtime(&msg_start_time_b.tv_sec)->tm_sec
-          );
-       printf("It ended at %d:%0d:%0d\n",
-            localtime(&msg_end.tv_sec)->tm_hour,
-            localtime(&msg_end.tv_sec)->tm_min,
-            localtime(&msg_end.tv_sec)->tm_sec
-          );
     struct timeval time_difference;
-    timersub(&msg_end, &msg_start_time_b, &time_difference);
+    timersub(&msg_end, &msg_start_time_b,     &time_difference);
 
-    printf("Elapsed time: %d:%0d:%0d\n",
-            localtime(&time_difference.tv_sec)->tm_hour,
-            localtime(&time_difference.tv_sec)->tm_min,
-            localtime(&time_difference.tv_sec)->tm_sec);
+    printf("Elapsed time: sec: %ld msec: %ld\n",
+            (long)time_difference.tv_sec, (long)time_difference.tv_usec);
   }
   
   return 0;
