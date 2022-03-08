@@ -1,0 +1,8 @@
+- An example of running test_app can be seen in the p4.png file
+
+-I used following websites as reference:
+	https://linux-kernel-labs.github.io/refs/heads/master/labs/kernel_api.html
+	https://www.kernel.org/doc/htmldocs/kernel-api/mm.html#id-1.6.2
+	https://www.kernel.org/doc/htmldocs/kernel-api/ch04s02.html
+
+
