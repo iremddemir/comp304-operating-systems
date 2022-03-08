@@ -109,10 +109,10 @@ int main(int argc, char** argv) {
         write(ord_pipe_da[WRITE_END],&read_msg_d,sizeof(read_msg_b));
         exit(0);
       }
-      wait(NULL);
+      
       exit(0);
     }
-     wait(NULL);
+     
     exit(0);
   }
   read(ord_pipe_da[READ_END],&car_no,sizeof(car_no));
