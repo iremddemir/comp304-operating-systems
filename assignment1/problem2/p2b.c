@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   int ord_pipe_cd[2];
   int ord_pipe_btwn_loop[2];
   pid_t pid_b,pid_c,pid_d;
-  //create pipe
+  //create pipes & error handling
   if(pipe(ord_pipe_ab)==-1)
   {
     fprintf(stderr,"Pipe A to B failed");
@@ -29,7 +29,6 @@ int main(int argc, char** argv) {
     fprintf(stderr,"Pipe D to A failed");
     return 1;
   }
-  //create pipe from B to C
   if(pipe(ord_pipe_bc) == -1){
     fprintf(stderr,"Pipe B to C Failed");
     return 1;
@@ -42,28 +41,40 @@ int main(int argc, char** argv) {
     fprintf(stderr,"Pipe between loops failed");
     return 1;
   }
-
+  //for loop for iterating over the pipeline,
+  //FOR is defined as an arbitary large number to make sure that A decides to terminate when car_no achives the given parameter
   for (int i = 0; i <FOR; i++){
+  //car no to store car number from previous iteration
   int car_no;
   //create Child B
   pid_b = fork();
+  //error handling in creating fork
   if (pid_b==-1){
     fprintf(stderr,"Fork Failed");
     return 1;
   }
-  //Parent Process A  
+  //Parent (of B) Process A  
   else if (pid_b > 0){
+    //if first iteration than initialize car number to 1
     if (i == 0){
       car_no = 1;
       printf("Started washing car %d\n",car_no);
       //send message ->B
       write(ord_pipe_ab[WRITE_END],&car_no,sizeof(car_no));
     }
+    //if not first iteration, read car no from previous iteration
+    else{
+    //send message ->B
+    read(ord_pipe_da[READ_END], &car_no, sizeof(car_no));
+    printf("Finished washing car %d\n",car_no);
+    car_no ++;
+    if(car_no > n){
+      exit(0);
+    }
     else{
     printf("Started washing car %d\n",car_no);
-    //send message ->B
-    read(ord_pipe_btwn_loop[READ_END], &car_no, sizeof(car_no));
     write(ord_pipe_ab[WRITE_END],&car_no,sizeof(car_no));
+      }
     }
   }
   //child B
@@ -106,7 +117,7 @@ int main(int argc, char** argv) {
         sleep(4);
         printf("Washing the wheels of car %d\n",read_msg_d);
         //send message -> A
-        write(ord_pipe_da[WRITE_END],&read_msg_d,sizeof(read_msg_b));
+ write(ord_pipe_da[WRITE_END],&read_msg_d,sizeof(read_msg_b));
         exit(0);
       }
       
@@ -115,13 +126,6 @@ int main(int argc, char** argv) {
      
     exit(0);
   }
-  read(ord_pipe_da[READ_END],&car_no,sizeof(car_no));
-  printf("Finished washing car %d\n",car_no);
-  car_no ++;
-  if(car_no > n){
-    exit(0);
-  }
-  write(ord_pipe_btwn_loop[WRITE_END],&car_no, sizeof(car_no));
   }
   
   return 0;
