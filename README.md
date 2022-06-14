@@ -3,6 +3,7 @@ This is an operating systems course.
 
 The solutions to assignments can be found in this repo.
 Course also has comprehensive projects: [Spacecraft Control with Pthreads](https://github.com/iremddemir/spacecraft_scheduling), [Mini File System](https://github.com/iremddemir/mini_filesystem)
+
 Topics covered are 
 * OS concepts and strategies: 
   * Multiprogramming, Time-sharing, Operating system structures 
